@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Essentials\LoggingPlugin\Plugin\App\Action;
 
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Psr\Log\LoggerInterface;
@@ -36,11 +37,14 @@ class ActionNameLogger
      *
      * @param Action $subject
      * @param ResultInterface|ResponseInterface $result
+     * @param RequestInterface $request
      * @return mixed
      */
-    public function afterDispatch(Action $subject, $result)
+    public function afterDispatch(Action $subject, $result, RequestInterface $request)
     {
-        $actionName = $subject->getRequest()->getFullActionName();
+//        $actionName = $subject->getRequest()->getFullActionName();
+        // it's possible to get arguments ($request) from observed dispatch method in after plugin
+        $actionName = $request->getFullActionName();
         $this->logger->info('Full action name: ' . $actionName);
 
         return $result;

@@ -45,7 +45,7 @@ class ActionNameLogger
 //        $actionName = $subject->getRequest()->getFullActionName();
         // it's possible to get arguments ($request) from observed dispatch method in after plugin
         $actionName = $request->getFullActionName();
-        $this->logger->info('Full action name: ' . $actionName);
+        $this->logger->info('Full action name from plugin: ' . $actionName);
 
         return $result;
     }

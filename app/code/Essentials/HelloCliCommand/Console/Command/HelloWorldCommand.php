@@ -12,19 +12,27 @@ namespace Essentials\HelloCliCommand\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * CLI command that prints 'Hello World' to the console.
  */
 class HelloWorldCommand extends Command
 {
+    private const NAME = 'name';
+
     /**
      * @inheritdoc
      */
     protected function configure(): void
     {
+        $options = [
+            new InputOption(self::NAME, null, InputOption::VALUE_REQUIRED, 'Name')
+        ];
+
         $this->setName('hello:world')
-            ->setDescription('CLI command that prints \'Hello World\'');
+            ->setDescription('CLI command that prints \'Hello World\' or \'Hello + NAME\'')
+            ->setDefinition($options);
 
         parent::configure();
     }
@@ -38,6 +46,10 @@ class HelloWorldCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Hello World from CLI');
+        if ($name = $input->getOption(self::NAME)) {
+            $output->writeln('Hello ' . $name);
+        } else {
+            $output->writeln('Hello World');
+        }
     }
 }
